@@ -2,30 +2,48 @@ package ru.netology.page;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
-import lombok.val;
-import static com.codeborne.selenide.Condition.visible;
+import ru.netology.data.DataHelper;
+
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
-
-
 public class DashboardPage {
-    private SelenideElement heading = $("[data-test-id='dashboard']");
-    private static ElementsCollection cards = $$(".list__item div");
-    private String button = "[data-test-id=action-deposit]";
-    private static String balanceStart = "баланс:";
-    private static String balanceFinish  = " р.";
+    private final SelenideElement heading = $("[data-test-id='dashboard']");
+    private final ElementsCollection cards = $$(".list__item div");
+    private final String balanceStart = "баланс:";
+    private final String balanceFinish  = " р.";
 
     public DashboardPage() {
         heading.shouldBe(visible);
     }
 
-    public static  int extractBalance(String text) {
-        String cardValue = cards.get(Integer.parseInt(text)).text();
-        val start = cardValue.indexOf(balanceStart);
-        val finish = cardValue.lastIndexOf(balanceFinish);
-        val value  = cardValue.substring(start + balanceStart.length(), finish).trim();
+    public int getCardBalance(DataHelper.CardInfo cardInfo) {
+        var text = cards.findBy(text(cardInfo.getCardNumber().substring(15))).getText();
+        return extractBalance(text);
+    }
+
+//    public int getCardBalance(int index){
+//        var text = cards.get(index).getText();
+//        return extractBalance(text);
+//    }
+
+//    public int getCardBalance(String id, DataHelper.CardInfo cardInfo){
+//        var text = cards.findBy(attribute("data-test-id", cardInfo.getTestId())).getText();
+//        return extractBalance(text);
+//    }
+
+
+    public int extractBalance(String text) {
+        var start = text.indexOf(balanceStart);
+        var finish = text.indexOf(balanceFinish);
+        var value  = text.substring(start + balanceStart.length(), finish);
         return Integer.parseInt(value);
     }
-    
+
+    public  TransferPage selectCardToTransfer(DataHelper.CardInfo cardInfo){
+        cards.findBy(text(cardInfo.getCardNumber().substring(15))).$("button").click();
+        return new TransferPage();
+    }
+
 }

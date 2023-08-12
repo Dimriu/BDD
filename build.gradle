@@ -21,9 +21,8 @@ dependencies {
     testImplementation 'junit:junit:4.13.1'
     testCompileOnly 'org.projectlombok:lombok:1.18.28'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.28'
+    testImplementation 'org.slf4j:slf4j-simple:1.7.32'
 
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
 }
 
 test {
