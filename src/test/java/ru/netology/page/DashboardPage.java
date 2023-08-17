@@ -18,17 +18,17 @@ public class DashboardPage {
         heading.shouldBe(visible);
     }
 
-    public int getCardBalance(DataHelper.CardInfo cardInfo) {
-        var text = cards.findBy(text(cardInfo.getCardNumber().substring(15))).getText();
-        return extractBalance(text);
-    }
-
-//    public int getCardBalance(int index){
-//        var text = cards.get(index).getText();
+//    public int getCardBalance(DataHelper.CardInfo cardInfo) {
+//        var text = cards.findBy(text(cardInfo.getCardNumber().substring(15))).getText();
 //        return extractBalance(text);
 //    }
 
-//    public int getCardBalance(String id, DataHelper.CardInfo cardInfo){
+    public int getCardBalance(int index){
+        var text = cards.get(index).getText();
+        return extractBalance(text);
+    }
+
+//    public int getCardBalance(DataHelper.CardInfo cardInfo){
 //        var text = cards.findBy(attribute("data-test-id", cardInfo.getTestId())).getText();
 //        return extractBalance(text);
 //    }
@@ -36,14 +36,30 @@ public class DashboardPage {
 
     public int extractBalance(String text) {
         var start = text.indexOf(balanceStart);
-        var finish = text.indexOf(balanceFinish);
-        var value  = text.substring(start + balanceStart.length(), finish);
+        var finish = text.lastIndexOf(balanceFinish);
+        var value  = text.substring(start + balanceStart.length(), finish).replaceAll("[^0-9\\.]", "");
         return Integer.parseInt(value);
     }
+
+
+
 
     public  TransferPage selectCardToTransfer(DataHelper.CardInfo cardInfo){
         cards.findBy(text(cardInfo.getCardNumber().substring(15))).$("button").click();
         return new TransferPage();
     }
+
+
+
+//    public  TransferPage selectCardToTransfer(int index){
+//        cards.get(index).$("button").click();
+//        return new TransferPage();
+//    }
+
+//        public TransferPage selectCardToTransfer(DataHelper.CardInfo cardInfo){
+//        cards.findBy((attribute("data-test-id", cardInfo.getTestId())).getText()).$("button").click();
+//        return new TransferPage();
+//    }
+
 
 }

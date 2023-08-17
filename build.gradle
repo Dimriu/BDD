@@ -1,6 +1,5 @@
 plugins {
     id 'java'
-    id 'io.freefair.lombok' version '5.3.0'
 }
 
 group = 'ru.netology'
@@ -16,14 +15,13 @@ repositories {
 }
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.2'
     testImplementation 'com.codeborne:selenide:6.12.2'
-    testImplementation 'junit:junit:4.13.1'
+    testImplementation 'com.github.javafaker:javafaker:1.0.2'
     testImplementation 'org.slf4j:slf4j-simple:1.7.32'
-
-
     testCompileOnly 'org.projectlombok:lombok:1.18.28'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.28'
+    testImplementation("io.github.bonigarcia:webdrivermanager:5.3.3")
 
 }
 
