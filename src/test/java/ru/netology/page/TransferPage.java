@@ -1,6 +1,5 @@
 package ru.netology.page;
 
-
 import com.codeborne.selenide.SelenideElement;
 import ru.netology.data.DataHelper;
 import java.time.Duration;
@@ -11,7 +10,7 @@ import static com.codeborne.selenide.Selenide.$;
 
 public class TransferPage {
     private final SelenideElement transferSum = $("[data-test-id='amount'] .input__control");
-    private final SelenideElement transferWhere = $("[data-test-id='from']");
+    private final SelenideElement transferWhere = $("[data-test-id='from'] .input__control");
     private final SelenideElement transferTopUpButton = $("[data-test-id='action-transfer']");
     private final SelenideElement transferHead = $(byText("Пополнение карты"));
     private final SelenideElement errorMessage = $("[data-test-id='error-notification']");
@@ -34,4 +33,5 @@ public class TransferPage {
     public void findErrorMessage(String expectedText){
         errorMessage.shouldHave(exactText(expectedText), Duration.ofSeconds(15)).shouldBe(visible);
     }
+
 }

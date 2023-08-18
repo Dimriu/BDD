@@ -22,7 +22,7 @@ public class TransferFromCardToCardTest {
 }
 
 @Test
-    void temp(){
+    void shouldTransferValidAmountFromCardSecondToCardFirst(){
     var firstCardInfo = getFirstCardInfo();
     var secondCardInfo = getSecondCardInfo();
     var firstCardBalance = dashboardPage.getCardBalance(0);
@@ -31,19 +31,39 @@ public class TransferFromCardToCardTest {
     System.out.println(secondCardBalance);
     var amount = generateValidAmount(firstCardBalance);
     System.out.println(amount);
-    var expectedBalanceFirstCard = firstCardBalance - amount;
+    var expectedBalanceFirstCard = firstCardBalance + amount;
     System.out.println(expectedBalanceFirstCard);
-    var expectedBalanceSecondCard = secondCardBalance + amount;
+    var expectedBalanceSecondCard = secondCardBalance - amount;
     System.out.println(expectedBalanceSecondCard);
     var transferPage = dashboardPage.selectCardToTransfer(DataHelper.getFirstCardInfo());
-    dashboardPage = transferPage.validTransfer(String.valueOf(amount), firstCardInfo);
-
-
-
+    dashboardPage = transferPage.validTransfer(String.valueOf(amount), secondCardInfo);
     var actualBalanceFirstCard = dashboardPage.getCardBalance(0);
     var actualBalanceSecondCard = dashboardPage.getCardBalance(1);
     Assertions.assertEquals(expectedBalanceFirstCard, actualBalanceFirstCard);
     Assertions.assertEquals(expectedBalanceSecondCard, actualBalanceSecondCard);
 }
+
+    @Test
+    void shouldAmountTransferError(){
+        var firstCardInfo = getFirstCardInfo();
+        var secondCardInfo = getSecondCardInfo();
+        var firstCardBalance = dashboardPage.getCardBalance(0);
+        var secondCardBalance = dashboardPage.getCardBalance(1);
+        System.out.println(firstCardBalance);
+        System.out.println(secondCardBalance);
+        var amount = generateInvalidAmount(firstCardBalance);
+        System.out.println(amount);
+        var expectedBalanceFirstCard = firstCardBalance + amount;
+        System.out.println(expectedBalanceFirstCard);
+        var expectedBalanceSecondCard = secondCardBalance - amount;
+        System.out.println(expectedBalanceSecondCard);
+        var transferPage = dashboardPage.selectCardToTransfer(DataHelper.getFirstCardInfo());
+        transferPage.validTransfer(String.valueOf(amount), secondCardInfo);
+        transferPage.findErrorMessage("Выполнена попытка перевода суммы, превышающей остаток на карте списания");
+        var actualBalanceFirstCard = dashboardPage.getCardBalance(0);
+        var actualBalanceSecondCard = dashboardPage.getCardBalance(1);
+        Assertions.assertEquals(expectedBalanceFirstCard, actualBalanceFirstCard);
+        Assertions.assertEquals(expectedBalanceSecondCard, actualBalanceSecondCard);
+    }
 
 }
